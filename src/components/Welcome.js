@@ -1,10 +1,11 @@
 import React from "react";
-import { useContracts } from "../hooks/chains";
-import { useProvider, connect, logout } from "../hooks/useProviders";
+import { connect, logout } from "../web3/useProviders";
+import { useData } from "../dataContext";
+import { useProvider } from "../web3/useProviders";
 
 export const Welcome = () => {
+  const data = useData();
   const provider = useProvider();
-  const contracts = useContracts(provider.signerOrProvider, provider.chainId);
 
   const login = async () => {
     await connect();
@@ -13,19 +14,18 @@ export const Welcome = () => {
     await logout();
     window.location.reload();
   };
+
   const doSomething = async () => {
-    const { auctionFactory } = contracts;
+    const { totalAuctions, auctionFactoryContract } = data;
+
     alert(
-      `Total Number of Auctions of Contract: ${
-        auctionFactory.address
-      }, ${await auctionFactory.totalAuctions()}`
+      `Total Number of Auctions of Contract: ${auctionFactoryContract.address}, ${totalAuctions}`
     );
-    console.log(auctionFactory);
   };
 
   return (
     <div>
-      {!contracts ? (
+      {!provider.account ? (
         <button onClick={login}>Connect Account</button>
       ) : (
         <>

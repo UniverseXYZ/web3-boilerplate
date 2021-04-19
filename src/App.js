@@ -1,13 +1,16 @@
 import "./App.css";
-import { Web3Provider } from "./hooks/useWeb3";
+import { Web3Provider } from "./web3";
+import { DataProvider } from "./dataContext";
 import { Welcome } from "./components/Welcome";
 
 const App = () => {
   return (
     <Web3Provider>
-      <div className="App">
-        <Welcome />
-      </div>
+      <DataProvider>
+        <div className="App">
+          <Welcome />
+        </div>
+      </DataProvider>
     </Web3Provider>
   );
 };
